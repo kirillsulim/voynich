@@ -6,7 +6,7 @@ import math
 
 
 # get string, mutate it
-def string_mutator(string, mut_coeff=0.1):
+def string_mutator(string, mut_coeff=0.3):
     if mut_coeff < 1:
         if random.randrange(math.ceil(1/mut_coeff)) != 0:
             return string
@@ -50,14 +50,12 @@ def copulate_strings(s1, s2):
 
 
 class GenMaster:
-    def __init__(self, alphabet, population_size=100):
-        self.population = []
-        for i in range(population_size):
-            self.population.append(string_mutator(alphabet, len(alphabet)))
-
+    def __init__(self, start_population):
+        self.population = start_population
 
     def generation(self, function, maximize=True):
-        self.population = sorted(self.population, key=lambda str: function(str), reverse=maximize)
+        mp = {x: function(x) for x in self.population}
+        self.population = sorted(mp, key=lambda x: x[1])
 
         # get children twice
         next_gen = list(map(lambda s: string_mutator(s), string_sexuator(self.population[:len(self.population)//2])))
@@ -69,7 +67,7 @@ class GenMaster:
         self.population = next_gen
 
 
-master = GenMaster("abcdefghijk", 100)
+#master = GenMaster("abcdefghijk", 100)
 
 def distance(string):
     cc = 0
@@ -81,19 +79,18 @@ def distance(string):
 
 
 
-for i in range(100):
-    st = datetime.datetime.now()
-    print("Generation {}".format(i))
-    master.generation(distance)
-    print("Mean distance: ", sum([distance(x) for x in master.population]) / 100)
-    print("Best: ", sorted(master.population, key=lambda s: distance(s), reverse=True)[:10])
-    print(datetime.datetime.now() - st, len(master.population))
+#for i in range(100):
+#    st = datetime.datetime.now()
+#    print("Generation {}".format(i))
+#    master.generation(distance)
+#    print("Mean distance: ", sum([distance(x) for x in master.population]) / 100)
+#    print("Best: ", sorted(master.population, key=lambda s: distance(s), reverse=True)[:10])
+#    print(datetime.datetime.now() - st, len(master.population))
 
-print(master.population)
+#print(master.population)
 
 #for x in ['edgjchikafb', 'jgkiecdfahb', 'cbgjhideafk', 'cfgjhikbaed', 'jagihfdeckb', 'ajeigfdkchb', 'bgjcifkaehd', 'icefhbdajkg', 'dahjibgkcef', 'faihebgjckd', 'ehijbkfgcad', 'iagjbkfehdc', 'gachbfdjkie', 'kgbfcedjiha', 'jagbidekfch', 'agfkibhcdje', 'kgiahefcdjb', 'chfidjgaebk', 'hjkcefgadbi', 'ihgabfjdekc', 'ahjicgdefkb', 'jabfckdhige', 'jbcfkedhiga', 'cbjgdhaefik', 'cijfdhbagke', 'abdhgcijekf', 'ajghbdicefk', 'afgkhdijebc', 'kcafibgjedh', 'kagfjeihbdc', 'eafghdijcbk', 'jbfdhekgcia', 'dgifhceakbj', 'aiejhfdgcbk', 'ijagedfkcbh', 'cdhjiefgkba', 'cjfkbdaehgi', 'djekbhacigf', 'jdifbhacekg', 'ajehbfdickg', 'jaegcfkibhd', 'jbfacekighd', 'kgbicehfjad', 'jgbikfdecha', 'jgekfbdciah', 'jgekibfcdha', 'bkdecjgihfa', 'fkbgejcihda', 'fdihceabgkj', 'jbdhcegkaif', 'jfkihdgbcea', 'chfjbidakeg', 'dgbjhaickef', 'daghfbicjek', 'dcghbkaejif', 'gbkfejdhica', 'bkehfjgidca', 'fjihebadgkc', 'fciabhjkged', 'hicjfegkadb', 'kgafbcihjde', 'abfgceihjkd', 'cifgkeahdbj', 'gdjfihaecbk', 'edhkijfcgab', 'agihedfcjkb', 'abcjhkdigfe', 'ibfjhcegkda', 'jgiehcafkdb', 'jfbhigkcead', 'bgifajcdehk', 'fkajigcdehb', 'ajfibgcedhk', 'djekbhfacgi', 'bikjcdfghae', 'bageckdihfj', 'akbijhdefcg', 'bkfjehgaicd', 'bahkefgjicd', 'jbghcdekiaf', 'jbiacekdghf', 'jkagcbdfihe', 'cgekijdbfha', 'fbaiekjhcgd', 'egijfkdchba', 'cghjkiaefbd', 'ajbfkidechg', 'ajgfhdikebc', 'gjbahdicefk', 'jdbahcifekg', 'ahkfdjcebig', 'afbhiedjkgc', 'afgibkhjced', 'dieabkjfcgh', 'ajefchdigbk', 'jifhdkcbgae', 'jcfkidbghae', 'fackibgjhde', 'jaekhfgidbc', 'jaekhdgbcif']:
 #    print(distance(x))
-
 
 
 

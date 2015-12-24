@@ -2,11 +2,11 @@ __author__ = 'kir'
 
 import os
 from collections import Counter
+import re
 
-def print_letter_counts():
+def letter_counts():
     cnt = Counter()
-    os.chdir("./clemtext")
-    for file in os.listdir("."):
+    for file in os.listdir("./clemtext"):
         if file.endswith(".lat"):
             with open(file) as so:
                 for l in so:
@@ -15,9 +15,24 @@ def print_letter_counts():
                         if c not in "abcdefghijklmnopqrstuvwxyz":
                             continue
                         cnt[c] += 1
+    #total = sum(cnt.values())
+    #for it in sorted(cnt.items(), key=lambda it: it[1], reverse=True):
+    #        print("{}: {:.2%}".format(it[0], it[1] / total ))
+    return cnt
 
 
-    total = sum(cnt.values())
 
-    for it in sorted(cnt.items(), key=lambda it: it[1], reverse=True):
-        print("{}: {:.2%}".format(it[0], it[1] / total ))
+def get_words_counter():
+    cnt = Counter()
+    os.chdir("./clemtext")
+    for file in os.listdir("."):
+        if file.endswith(".lat"):
+            with open(file) as so:
+                for l in so:
+                    words = re.split("\W+", l)
+                    for w in words:
+                        cnt[w.lower()] += 1
+    del cnt[""]
+    return cnt
+
+#print(get_words_counter().most_common(10))

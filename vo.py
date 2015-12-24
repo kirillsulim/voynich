@@ -2,9 +2,9 @@ import re
 from collections import Counter
 import string
 import textwrap
+import vulgata
+import gen.populate
 
-page_info_rex = re.compile("(<.+>)|!|\s|\n|=")
-undef_symbols_rex = re.compile("[\.\-\*]")
 
 shade_words = [
     #"ok",
@@ -36,33 +36,7 @@ spanish_langtable = "EAOSNRILDTUCMPBHQYVGÓÍFJZÁÉÑXÚKWÜ".lower()
 shade_words_rex = re.compile("|".join(shade_words))
 
 
-words_counter = Counter()
 
-text_onliner = ""
-clean_onliner = ""
-
-all_words = []
-
-with open("voynich.txt", "r") as file:
-    for line in file:
-        if not line.startswith("<f1r"):
-            continue
-        line = page_info_rex.sub("", line)
-
-        text_onliner += line
-
-        line = shade_words_rex.sub("", line)
-
-        clean_onliner += line
-
-
-
-        words = undef_symbols_rex.split(line)
-        all_words.extend(words)
-        for w in words:
-            words_counter[w] += 1
-
-print(words_counter.most_common(10))
 
 
 def count_someftongs(length, list):
@@ -103,14 +77,8 @@ def create_trans_table(ag, langtable):
 
 
 
-######################################
-let_counter = count_someftongs(1, all_words)
-let2_counter = count_someftongs(2, all_words)
-let3_counter = count_someftongs(3, all_words)
-let4_counter = count_someftongs(4, all_words)
 
 
-good_print(let_counter)
 
 def mytrans(string, dict):
     def conv(char):
@@ -142,25 +110,4 @@ mantable = create_manual_table(
     "eitusanrmocglpbvqdfhjxy",
     #^^^^^^^^^^
 )
-
-for it in let2_counter.most_common(10):
-    print(it[0], mytrans(it[0], mantable))
-
-for it in let3_counter.most_common(10):
-    print(it[0], mytrans(it[0], mantable))
-
-for it in let4_counter.most_common(10):
-    print(it[0], mytrans(it[0], mantable))
-
-
-
-
-#print(text_onliner[:200])
-#print("latin:", textwrap.fill(mytrans(clean_onliner[:1000], create_trans_table(let_counter, latin_vulgata_table)), 150))
-print("latin:", textwrap.fill(mytrans(clean_onliner[:5000], mantable), 150))
-#print("italian:", mytrans(trnsalatble, create_trans_table(let_counter, italian_langtable)))
-#print("spania:", mytrans(trnsalatble, create_trans_table(let_counter, spanish_langtable)))
-
-print("\n\n")
-print("orig:", textwrap.fill(text_onliner[:5000], 150))
 
