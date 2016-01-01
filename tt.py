@@ -1,11 +1,10 @@
-
-
-import voynich
-import vulgata
-from gen.populate import GenMaster, string_mutator
-from gen.comparation import compare
-from vo import mytrans, create_manual_table
 import textwrap
+
+from data.voynich import voynich
+from data.vulgata import vulgata
+from genetic.comparation import compare
+from genetic.populate import GenMaster, string_mutator
+from vo import mytrans, create_manual_table
 
 part = voynich.get_full_text_merged()[:1000]
 

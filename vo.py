@@ -1,10 +1,5 @@
 import re
 from collections import Counter
-import string
-import textwrap
-import vulgata
-import gen.populate
-
 
 shade_words = [
     #"ok",
