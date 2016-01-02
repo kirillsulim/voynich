@@ -37,5 +37,5 @@ def vowel_distance(v1, v2):
         return INFINITE_DISTANCE
 
 
-
-print(distance("faker", "bucker"))
+def mod_levenshtein_distance(s1, s2):
+    

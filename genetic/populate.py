@@ -3,6 +3,7 @@ from difflib import SequenceMatcher
 import datetime
 import functools
 import math
+import logging as log
 
 
 # get string, mutate it
@@ -54,7 +55,16 @@ class GenMaster:
         self.population = start_population
 
     def generation(self, function, maximize=True):
-        mp = {x: function(x) for x in self.population}
+        log.info("Generation started")
+
+        mp = {}
+        for spec in self.population:
+            value = function(spec);
+            mp[spec] = value
+            log.debug("Added %s with value %d", spec, value)
+
+        log.debug("Population dictionary: %s", mp)
+        log.info("Mean value for population: %d", sum(mp.values())/len(mp))
         self.population = sorted(mp, key=lambda x: x[1])
 
         # get children twice
